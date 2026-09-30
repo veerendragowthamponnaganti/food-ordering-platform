@@ -64,6 +64,14 @@ pipeline {
                 bat 'curl -f http://localhost:8095/orders'
             }
         }
+
+        stage('Verify Database') {
+            steps {
+                bat '''
+                docker exec food-db psql -U %DB_USER% -d %DB_NAME% -c "SELECT id, customer_name, food_item, quantity FROM orders ORDER BY id;"
+                '''
+            }
+        }
     }
 
     post {
