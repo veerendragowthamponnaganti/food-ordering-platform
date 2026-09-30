@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile
     container_name: order-api
     environment:
-      DB_HOST: localhost
+      DB_HOST: db
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
