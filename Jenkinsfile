@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        DB_NAME = 'ordersdb'
+        DB_USER = 'orderuser'
+        DB_PASSWORD = 'orderpass'
+    }
+
     stages {
 
         stage('Checkout') {
