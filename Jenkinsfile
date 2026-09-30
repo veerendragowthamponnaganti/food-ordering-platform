@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -53,7 +54,7 @@ pipeline {
                 bat '''
                 curl -X POST http://localhost:8095/orders ^
                 -H "Content-Type: application/json" ^
-                -d "{\"customer_name\":\"Jenkins\",\"food_item\":\"Burger\",\"quantity\":2}"
+                -d "{\\"customer_name\\":\\"Jenkins\\",\\"food_item\\":\\"Burger\\",\\"quantity\\":2}"
                 '''
             }
         }
@@ -78,3 +79,4 @@ pipeline {
         }
     }
 }
+
