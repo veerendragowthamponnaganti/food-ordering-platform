@@ -12,19 +12,19 @@ pipeline {
         stage('Check Docker') {
             steps {
                 bat 'docker --version'
-                bat 'docker compose version'
+                bat 'docker-compose version'
             }
         }
 
         stage('Build Order API Image') {
             steps {
-                bat 'docker compose build order-api'
+                bat 'docker-compose build order-api'
             }
         }
 
         stage('Start Application') {
             steps {
-                bat 'docker compose up -d'
+                bat 'docker-compose up -d'
             }
         }
 
@@ -63,12 +63,12 @@ pipeline {
 
         failure {
             echo 'Pipeline failed. Displaying container logs...'
-            bat 'docker compose logs'
+            bat 'docker-compose logs'
         }
 
         always {
             echo 'Stopping application containers...'
-            bat 'docker compose down'
+            bat 'docker-compose down'
         }
     }
 }
