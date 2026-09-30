@@ -4,8 +4,6 @@ pipeline {
 
     environment {
         DB_NAME = 'ordersdb'
-        DB_USER = 'orderuser'
-        DB_PASSWORD = 'orderpass'
     }
 
     stages {
@@ -31,7 +29,15 @@ pipeline {
 
         stage('Start Application') {
             steps {
-                bat 'docker-compose up -d'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'food-db-credentials',
+                        usernameVariable: 'DB_USER',
+                        passwordVariable: 'DB_PASSWORD'
+                    )
+                ]) {
+                    bat 'docker-compose up -d'
+                }
             }
         }
 
@@ -67,9 +73,17 @@ pipeline {
 
         stage('Verify Database') {
             steps {
-                bat '''
-                docker exec food-db psql -U %DB_USER% -d %DB_NAME% -c "SELECT id, customer_name, food_item, quantity FROM orders ORDER BY id;"
-                '''
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'food-db-credentials',
+                        usernameVariable: 'DB_USER',
+                        passwordVariable: 'DB_PASSWORD'
+                    )
+                ]) {
+                    bat '''
+                    docker exec food-db psql -U %DB_USER% -d %DB_NAME% -c "SELECT id, customer_name, food_item, quantity FROM orders ORDER BY id;"
+                    '''
+                }
             }
         }
     }
