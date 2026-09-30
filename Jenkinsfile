@@ -23,7 +23,15 @@ pipeline {
 
         stage('Build Order API Image') {
             steps {
-                bat 'docker-compose build order-api'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'food-db-credentials',
+                        usernameVariable: 'DB_USER',
+                        passwordVariable: 'DB_PASSWORD'
+                    )
+                ]) {
+                    bat 'docker-compose build order-api'
+                }
             }
         }
 
@@ -92,12 +100,30 @@ pipeline {
 
         failure {
             echo 'Pipeline failed. Displaying container logs...'
-            bat 'docker-compose logs'
+
+            withCredentials([
+                usernamePassword(
+                    credentialsId: 'food-db-credentials',
+                    usernameVariable: 'DB_USER',
+                    passwordVariable: 'DB_PASSWORD'
+                ])
+            {
+                bat 'docker-compose logs'
+            }
         }
 
         always {
             echo 'Stopping application containers...'
-            bat 'docker-compose down'
+
+            withCredentials([
+                usernamePassword(
+                    credentialsId: 'food-db-credentials',
+                    usernameVariable: 'DB_USER',
+                    passwordVariable: 'DB_PASSWORD'
+                ])
+            {
+                bat 'docker-compose down'
+            }
         }
     }
 }
