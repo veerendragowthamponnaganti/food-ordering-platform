@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -7,6 +6,13 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('Check Docker') {
+            steps {
+                bat 'docker --version'
+                bat 'docker compose version'
             }
         }
 
@@ -54,9 +60,10 @@ pipeline {
     }
 
     post {
+
         failure {
             echo 'Pipeline failed. Displaying container logs...'
-            bat 'docker compose logs --no-color'
+            bat 'docker compose logs'
         }
 
         always {
@@ -65,4 +72,3 @@ pipeline {
         }
     }
 }
-
