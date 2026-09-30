@@ -106,8 +106,8 @@ pipeline {
                     credentialsId: 'food-db-credentials',
                     usernameVariable: 'DB_USER',
                     passwordVariable: 'DB_PASSWORD'
-                ])
-            {
+                )
+            ]) {
                 bat 'docker-compose logs'
             }
         }
@@ -120,8 +120,8 @@ pipeline {
                     credentialsId: 'food-db-credentials',
                     usernameVariable: 'DB_USER',
                     passwordVariable: 'DB_PASSWORD'
-                ])
-            {
+                )
+            ]) {
                 bat 'docker-compose down'
             }
         }
